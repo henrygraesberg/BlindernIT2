@@ -1,7 +1,7 @@
 import json
 
 class UserList:
-    def __init__(self, filename=None, users: dict={}):
+    def __init__(self, filename: str=None, users: dict={}):
         self.filename = filename
 
         if filename is not None and users == {}:
@@ -14,12 +14,16 @@ class UserList:
 
         self.users = users
 
-    def to_json(self):
-        json_string = json.dumps(self.users)
+    def save_to_json(self):
+        try:
+            json_string = json.dumps(self.users)
 
-        file = open(self.filename, "wt")
-        file.write(json_string)
-        file.close()
+            file = open(self.filename, "wt")
+            file.write(json_string)
+            file.close()
+            return 0
+        except:
+            return -1
 
     def append_user(self, full_name: str, suffix: str):
         username = lagBrukernavn(full_name, self.users)
@@ -29,6 +33,11 @@ class UserList:
             "full name": full_name,
             "email": email
             }
+    
+    def remove_user(self, username: str):
+        removed_user = self.users.pop(username)
+
+        return f'removed {removed_user["full name"]}({username}) from user list'
 
 def lagBrukernavn(full_name: str, user_dict: dict):
     split_name = full_name.lower().split()
@@ -76,17 +85,24 @@ def main():
     while run:
         userin = input("")
 
-        if(userin == "i"):
+        if userin == "i":
             userin_name = input("Skriv det fulle navnet: ")
             userin_suffix = input("Skriv brukerens epost-suffix: ")
 
             uio_users.append_user(userin_name, userin_suffix)
-        elif(userin == "p"):
+        elif userin == "r":
+            userin_username = input("Skriv brukernavnet til brukeren du vil fjerne: ")
+
+            print(uio_users.remove_user(userin_username))
+        elif userin == "p":
             skrivUtEposter(uio_users)
-        elif(userin == "s"):
+        elif userin == "s":
             run = False
 
-            uio_users.to_json()
+            if uio_users.save_to_json() == -1:
+                print("failed to save .json file")
+            else:
+                print(f'saved as {uio_users.filename}')
 
 if __name__ == "__main__":
     main()
