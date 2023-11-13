@@ -1,7 +1,7 @@
 import json
 
-class user_list:
-    def __init__(self, filename=None, users: dict={}):
+class UserList:
+    def __init__(self, filename: str=None, users: dict={}):
         self.filename = filename
 
         if filename is not None and users == {}:
@@ -14,12 +14,16 @@ class user_list:
 
         self.users = users
 
-    def to_json(self):
-        json_string = json.dumps(self.users)
+    def save_to_json(self):
+        try:
+            json_string = json.dumps(self.users)
 
-        file = open(self.filename, "wt")
-        file.write(json_string)
-        file.close()
+            file = open(self.filename, "wt")
+            file.write(json_string)
+            file.close()
+            return 0
+        except:
+            return -1
 
     def append_user(self, full_name: str, suffix: str):
         username = lagBrukernavn(full_name, self.users)
@@ -67,14 +71,14 @@ def check_duplicate(username: str, user_dict: dict):
 def lagEpost(username: str, suffix: str):
     return f'{username}@{suffix}'
 
-def skrivUtEposter(user_list: user_list):
+def skrivUtEposter(user_list: UserList):
     users = user_list.users
 
     for user in users:
         print(users[user]["email"])
 
 def main():
-    uio_users = user_list("./UIO_users.json")
+    uio_users = UserList("./UIO_users.json")
 
     run = True
 
@@ -95,7 +99,10 @@ def main():
         elif userin == "s":
             run = False
 
-            uio_users.to_json()
+            if uio_users.save_to_json() == -1:
+                print("failed to save .json file")
+            else:
+                print(f'saved as {uio_users.filename}')
 
 if __name__ == "__main__":
     main()
