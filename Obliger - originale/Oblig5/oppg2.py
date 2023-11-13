@@ -14,11 +14,19 @@ class UserList:
 
         self.users = users
 
+    def __str__(self):
+        output = "\n"
+        
+        for i in self.users:
+            output += self.users[i]["email"] + "\n"
+        
+        return output
+
     def save_to_json(self):
         try:
+            file = open(self.filename, "wt")
             json_string = json.dumps(self.users)
 
-            file = open(self.filename, "wt")
             file.write(json_string)
             file.close()
             return 0
@@ -38,12 +46,6 @@ class UserList:
         removed_user = self.users.pop(username)
 
         return f'removed {removed_user["full name"]}({username}) from user list'
-    
-    def skrivUtEposter(self):
-        users = self.users
-
-        for user in users:
-            print(users[user]["email"])
     
     def __lagBrukernavn(self, full_name: str, user_dict: dict):
         split_name = full_name.lower().split()
@@ -88,12 +90,12 @@ def main():
 
             print(uio_users.remove_user(userin_username))
         elif userin == "p":
-            uio_users.skrivUtEposter()
+            print(uio_users)
         elif userin == "s":
             run = False
 
             if uio_users.save_to_json() == -1:
-                raise Exception("Failed to save .json file")
+                raise FileExistsError("Failed to save .json file")
             else:
                 print(f'saved as {uio_users.filename}')
 
