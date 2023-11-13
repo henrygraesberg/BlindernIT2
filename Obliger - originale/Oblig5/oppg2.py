@@ -46,27 +46,20 @@ def lagBrukernavn(full_name: str, user_dict: dict):
     extra_nums = 0
     username = split_name[0] + split_name[1][0]
 
-    duplicate = check_duplicate(username, user_dict)
+    duplicate = username in user_dict
 
     while duplicate is True:
         nums_of_letters += 1
-        if nums_of_letters > len(split_name[1]):
-            extra_nums += 1
 
         username = split_name[0] + split_name[1][:+nums_of_letters]
-        if extra_nums > 0:
+
+        if nums_of_letters > len(split_name[1]):
+            extra_nums += 1
             username = username + str(extra_nums)
 
-        duplicate = check_duplicate(username, user_dict)
+        duplicate = username in user_dict
 
     return username
-
-def check_duplicate(username: str, user_dict: dict):
-    for i in user_dict:
-        if i == username:
-            return True
-    
-    return False
 
 def lagEpost(username: str, suffix: str):
     return f'{username}@{suffix}'
