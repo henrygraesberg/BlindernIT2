@@ -67,7 +67,7 @@ class UserList:
 
         return username
     
-    def __lagEpost(username: str, suffix: str):
+    def __lagEpost(self, username: str, suffix: str):
         return f'{username}@{suffix}'
 
 def main():
