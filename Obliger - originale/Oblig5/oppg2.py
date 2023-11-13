@@ -29,6 +29,11 @@ class user_list:
             "full name": full_name,
             "email": email
             }
+    
+    def remove_user(self, username: str):
+        removed_user = self.users.pop(username)
+
+        return f'removed {removed_user["full name"]}({username}) from user list'
 
 def lagBrukernavn(full_name: str, user_dict: dict):
     split_name = full_name.lower().split()
@@ -76,14 +81,18 @@ def main():
     while run:
         userin = input("")
 
-        if(userin == "i"):
+        if userin == "i":
             userin_name = input("Skriv det fulle navnet: ")
             userin_suffix = input("Skriv brukerens epost-suffix: ")
 
             uio_users.append_user(userin_name, userin_suffix)
-        elif(userin == "p"):
+        elif userin == "r":
+            userin_username = input("Skriv brukernavnet til brukeren du vil fjerne: ")
+
+            print(uio_users.remove_user(userin_username))
+        elif userin == "p":
             skrivUtEposter(uio_users)
-        elif(userin == "s"):
+        elif userin == "s":
             run = False
 
             uio_users.to_json()
