@@ -1,6 +1,6 @@
 import json
 
-class user_list:
+class UserList:
     def __init__(self, filename=None, users: dict={}):
         self.filename = filename
 
@@ -62,14 +62,14 @@ def check_duplicate(username: str, user_dict: dict):
 def lagEpost(username: str, suffix: str):
     return f'{username}@{suffix}'
 
-def skrivUtEposter(user_list: user_list):
+def skrivUtEposter(user_list: UserList):
     users = user_list.users
 
     for user in users:
         print(users[user]["email"])
 
 def main():
-    uio_users = user_list("./UIO_users.json")
+    uio_users = UserList("./UIO_users.json")
 
     run = True
 
