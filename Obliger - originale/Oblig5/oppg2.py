@@ -26,8 +26,8 @@ class UserList:
             return -1
 
     def append_user(self, full_name: str, suffix: str):
-        username = lagBrukernavn(full_name, self.users)
-        email = lagEpost(username, suffix)
+        username = self.__lagBrukernavn(full_name, self.users)
+        email = self.__lagEpost(username, suffix)
 
         self.users[username] = {
             "full name": full_name,
@@ -38,37 +38,37 @@ class UserList:
         removed_user = self.users.pop(username)
 
         return f'removed {removed_user["full name"]}({username}) from user list'
+    
+    def skrivUtEposter(self):
+        users = self.users
 
-def lagBrukernavn(full_name: str, user_dict: dict):
-    split_name = full_name.lower().split()
+        for user in users:
+            print(users[user]["email"])
+    
+    def __lagBrukernavn(self, full_name: str, user_dict: dict):
+        split_name = full_name.lower().split()
 
-    nums_of_letters = 0
-    extra_nums = 0
-    username = split_name[0] + split_name[1][0]
-
-    duplicate = username in user_dict
-
-    while duplicate is True:
-        nums_of_letters += 1
-
-        username = split_name[0] + split_name[1][:+nums_of_letters]
-
-        if nums_of_letters > len(split_name[1]):
-            extra_nums += 1
-            username = username + str(extra_nums)
+        nums_of_letters = 0
+        extra_nums = 0
+        username = split_name[0] + split_name[1][0]
 
         duplicate = username in user_dict
 
-    return username
+        while duplicate is True:
+            nums_of_letters += 1
 
-def lagEpost(username: str, suffix: str):
-    return f'{username}@{suffix}'
+            username = split_name[0] + split_name[1][:+nums_of_letters]
 
-def skrivUtEposter(user_list: UserList):
-    users = user_list.users
+            if nums_of_letters > len(split_name[1]):
+                extra_nums += 1
+                username = username + str(extra_nums)
 
-    for user in users:
-        print(users[user]["email"])
+            duplicate = username in user_dict
+
+        return username
+    
+    def __lagEpost(username: str, suffix: str):
+        return f'{username}@{suffix}'
 
 def main():
     uio_users = UserList("./UIO_users.json")
@@ -88,7 +88,7 @@ def main():
 
             print(uio_users.remove_user(userin_username))
         elif userin == "p":
-            skrivUtEposter(uio_users)
+            uio_users.skrivUtEposter()
         elif userin == "s":
             run = False
 
