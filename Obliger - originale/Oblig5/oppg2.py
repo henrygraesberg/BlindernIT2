@@ -93,7 +93,7 @@ def main():
             run = False
 
             if uio_users.save_to_json() == -1:
-                print("failed to save .json file")
+                raise Exception("Failed to save .json file")
             else:
                 print(f'saved as {uio_users.filename}')
 
