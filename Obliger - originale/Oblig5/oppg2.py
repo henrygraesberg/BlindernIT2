@@ -1,4 +1,4 @@
-import json
+import json, os
 
 class UserList:
     def __init__(self, filename: str=None, users: dict={}) -> None:
@@ -155,6 +155,16 @@ def main() -> None:
                 raise FileExistsError("Failed to save .json file")
             else:
                 print(f'saved as {uio_users.filename}')
+        elif userin == "d":
+            confirmation = input("This action will delete both the json file and the current user list being worked on and stop the program. Are you sure? y/n: ")
+
+            if confirmation == "y":
+                os.remove(uio_users.filename)
+                uio_users.users = {}
+
+                run = False
+
+
 
 if __name__ == "__main__":
     main()
