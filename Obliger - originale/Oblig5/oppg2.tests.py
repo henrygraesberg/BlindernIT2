@@ -8,7 +8,7 @@ def test_append_user():
     expected_email = "karin@student.matnat.uio.no"
 
     result_username = list(test_obj.users.keys())[0]
-    result_email = test_obj.users[expected_username]["email"]
+    result_email = test_obj.users[result_username]["email"]
     
     assert result_username == expected_username, "Expected " + expected_username + ", but got " + result_username
     assert result_email == expected_email, "Expected " + expected_email + ", but got " + result_email
