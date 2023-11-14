@@ -1,7 +1,7 @@
 import json
 
 class UserList:
-    def __init__(self, filename: str=None, users: dict={}):
+    def __init__(self, filename: str=None, users: dict={}) -> None:
         self.filename = filename
 
         if filename is not None and users == {}:
@@ -14,7 +14,7 @@ class UserList:
 
         self.users = users
 
-    def __str__(self):
+    def __str__(self) -> str:
         output = "\n"
         
         for i in self.users:
@@ -22,7 +22,14 @@ class UserList:
         
         return output
 
-    def save_to_json(self):
+    def save_to_json(self) -> int:
+        """
+        Saves self.users as a .json string to the directory specified 
+        in self.filname
+
+        Returns:
+            int: 0 on success, -1 on failiure
+        """
         try:
             file = open(self.filename, "wt")
             json_string = json.dumps(self.users)
@@ -33,8 +40,15 @@ class UserList:
         except:
             return -1
 
-    def append_user(self, full_name: str, suffix: str):
-        username = self.__lagBrukernavn(full_name, self.users)
+    def append_user(self, full_name: str, suffix: str) -> None:
+        """
+        Adds a user to self.users
+
+        Args:
+            full_name (str): Full name of the user to be added
+            suffix (str): email suffix of the user to be added
+        """
+        username = self.__lagBrukernavn(full_name)
         email = self.__lagEpost(username, suffix)
 
         self.users[username] = {
@@ -42,19 +56,43 @@ class UserList:
             "email": email
             }
     
-    def remove_user(self, username: str):
-        removed_user = self.users.pop(username)
+    def remove_user(self, username: str) -> str:
+        """
+        removes a user from self.users
 
-        return f'removed {removed_user["full name"]}({username}) from user list'
+        Args:
+            username (str): Username of the user to be removed
+
+        Returns:
+            str: returns a string explaining success or failure
+        """
+        try:
+            removed_user = self.users.pop(username)
+
+            return f'removed {removed_user["full name"]}({username}) from user list'
+        except KeyError:
+            return f'could not find {username} in user list'
+        except:
+            return f'could not remove {username} from user list'
+
     
-    def __lagBrukernavn(self, full_name: str, user_dict: dict):
+    def __lagBrukernavn(self, full_name: str) -> str:
+        """
+        Makes a unique username based on the full name of the user
+
+        Args:
+            full_name (str): Full name of the user
+
+        Returns:
+            str: A unique username
+        """
         split_name = full_name.lower().split()
 
         nums_of_letters = 0
         extra_nums = 0
         username = split_name[0] + split_name[1][0]
 
-        duplicate = username in user_dict
+        duplicate = username in self.users
 
         while duplicate is True:
             nums_of_letters += 1
@@ -63,21 +101,32 @@ class UserList:
 
             if nums_of_letters > len(split_name[1]):
                 extra_nums += 1
-                username = username + str(extra_nums)
+                username += str(extra_nums)
 
-            duplicate = username in user_dict
+            duplicate = username in self.users
 
         return username
     
-    def __lagEpost(self, username: str, suffix: str):
+    def __lagEpost(self, username: str, suffix: str) -> str:
+        """
+        Makes an email for the user with the username as a prefix and 
+        the supplied suffix as the email domain
+
+        Args:
+            username (str): Users username
+            suffix (str): Email domain
+
+        Returns:
+            str: Email address of the user
+        """
         return f'{username}@{suffix}'
 
-def main():
+def main() -> None:
     uio_users = UserList("./UIO_users.json")
 
     run = True
 
-    while run:
+    while run is True:
         userin = input("")
 
         if userin == "i":
