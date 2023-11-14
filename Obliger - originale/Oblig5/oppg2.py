@@ -32,7 +32,7 @@ class UserList:
         """
         try:
             file = open(self.filename, "wt")
-            json_string = json.dumps(self.users)
+            json_string = json.dumps(self.users, indent=4, sort_keys=True)
 
             file.write(json_string)
             file.close()
