@@ -18,4 +18,4 @@ liste_index_2 = int(input("Skriv en til liste index: "))
 if 0 <= liste_index_1 < len(reiseplan) and 0 <= liste_index_2 < len(reiseplan):
     print(reiseplan[liste_index_1][liste_index_2])
 else:
-    print("index out of range")
+    raise IndexError("index out of range")
