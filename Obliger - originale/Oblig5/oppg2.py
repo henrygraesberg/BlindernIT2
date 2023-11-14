@@ -2,6 +2,14 @@ import json
 
 class UserList:
     def __init__(self, filename: str=None, users: dict={}) -> None:
+        """
+        Initiates a UserList object
+
+        Args:
+            filename (str, optional): Directory of the file where users will be saved upon calling save_to_json(). Defaults to None.
+            users (dict, optional): Dictionary of users. Defaults to {}.
+            !IMPORTANT If users is not an empty dict and filename is not None, users will overwrite the content of filename upon calling save_to_json()
+        """
         self.filename = filename
 
         if filename is not None and users == {}:
