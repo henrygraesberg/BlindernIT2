@@ -164,7 +164,5 @@ def main() -> None:
 
                 run = False
 
-
-
 if __name__ == "__main__":
     main()
