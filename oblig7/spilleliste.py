@@ -22,6 +22,7 @@ class Spilleliste:
         for song in self._sanger:
             if song.sjekkArtistOgTittel(sang._artist, sang._title):
                 indexof = self._sanger.index(song)
+                break
 
         if indexof is not None:
             self._sanger.pop(indexof)
