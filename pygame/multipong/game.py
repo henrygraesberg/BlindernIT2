@@ -36,9 +36,6 @@ class Ball:
         self.rect.y += self.velo[1]
 
         return hit_player
-    
-def clear_screen():
-    pass
 
 pygame.init()
 
