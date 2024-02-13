@@ -22,8 +22,8 @@ class Ball:
         if self.rect.colliderect(roof):
             self.velo[1] = -self.velo[1]
 
-        if self.rect.colliderect(player):
-            self.velo[1] = - self.velo[1]
+        if self.rect.colliderect(player) and self.velo[1] > 0:
+            self.velo[1] = -self.velo[1]
             hit_player = True
 
         if self.rect.collidelist(wall_list) != -1:
@@ -38,12 +38,7 @@ class Ball:
         return hit_player
     
 def clear_screen():
-    display.fill((0, 0, 0))
-    display.blit(walls_surf[0], walls_rect[0])
-    display.blit(walls_surf[1], walls_rect[1])
-    display.blit(floor, floor_rect)
-    display.blit(roof, roof_rect)
-    display.blit(player_surf, player_rect)
+    pass
 
 pygame.init()
 
@@ -53,24 +48,27 @@ pygame.display.set_caption("multipong")
 FPS = 24
 game_clock = pygame.time.Clock()
 
-player_surf = pygame.Surface((100, 50))
+player_surf = pygame.Surface((100, 25))
 player_surf.fill((255, 0, 0))
-player_rect = player_surf.get_rect(center = (200, 700))
+player_rect = player_surf.get_rect(center = (200, 650))
 
 walls_surf = [
     pygame.Surface((10, 700)),
     pygame.Surface((10, 700))
 ]
-
 walls_rect = [walls_surf[0].get_rect(),
          walls_surf[1].get_rect(topright = (400, 0))]
 
 floor = pygame.Surface((800, 10))
 floor_rect = floor.get_rect(midbottom = (0, 700))
+
 roof = pygame.Surface((800, 10))
 roof_rect = roof.get_rect()
 
-balls = [Ball((255, 0, 255), (randint(50, 350), 30), [randint(5, 15), randint(3, 13)])]
+balls = [Ball((255, 0, 255),
+              (randint(50, 350), 30),
+              [randint(5, 15),
+               randint(3, 13)])]
 
 while True:
     for event in pygame.event.get():
@@ -78,21 +76,38 @@ while True:
             pygame.quit()
             sys.exit()
 
-    keys  = pygame.key.get_pressed()
+    keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
         player_rect.x -= 10
     if keys[pygame.K_RIGHT]:
         player_rect.x += 10
 
-    clear_screen()
+    display.fill((0, 0, 0))
+    display.blit(walls_surf[0], walls_rect[0])
+    display.blit(walls_surf[1], walls_rect[1])
+    display.blit(floor, floor_rect)
+    display.blit(roof, roof_rect)
+    display.blit(player_surf, player_rect)
+
+    to_delete = []
 
     for i in range(len(balls)):
-        display.blit(balls[i].surface, balls[i].rect)
-        hit_player = balls[i].move(walls_rect, roof_rect, floor_rect, player_rect)
+        hit_player = balls[i].move(walls_rect,
+                                   roof_rect,
+                                   floor_rect,
+                                   player_rect)
         if hit_player == True:
-            balls.append(Ball((255, 0, 255), (randint(50, 350), 30), [randint(5, 15), randint(3, 13)]))
+            balls.append(Ball((255, 0, 255),
+                              (randint(50, 350), 30),
+                              [randint(5, 15),
+                               randint(3, 13)]))
         if hit_player == "delete":
-            balls.pop(i)
+            to_delete.append(i)
+        display.blit(balls[i].surface, balls[i].rect)
+
+    to_delete.sort(reverse=True)
+    for i in to_delete:
+        balls.pop(i)
 
     pygame.display.update()
     game_clock.tick(FPS)
