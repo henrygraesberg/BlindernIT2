@@ -47,11 +47,11 @@ class Ball:
     def check_side_hit(self, player) -> bool:
         if self.rect.collidepoint(player.x, player.y):
             return True
-        if self.rect.collidepoint(player.x, player.x + 10):
+        if self.rect.collidepoint(player.x, player.x + 20):
             return True
-        if self.rect.collidepoint(player.x + 10, player.y):
+        if self.rect.collidepoint(player.x + 20, player.y):
             return True
-        if self.rect.collidepoint(player.x + 10, player.y + 10):
+        if self.rect.collidepoint(player.x + 20, player.y + 20):
             return True
         return False
 
@@ -63,7 +63,7 @@ pygame.display.set_caption("multipong")
 FPS = 24
 game_clock = pygame.time.Clock()
 
-player_surf = pygame.Surface((100, 10))
+player_surf = pygame.Surface((100, 20))
 player_surf.fill((255, 0, 0))
 player_rect = player_surf.get_rect(center = (200, 650))
 
