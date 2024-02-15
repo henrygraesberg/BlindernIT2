@@ -13,6 +13,7 @@ class Ball:
         self.surface.fill(color)
         self.rect = self.surface.get_rect(center = start_pos)
         self.velo = start_velo
+        self.hit_side = False
 
     def move(self,
              wall_list: list,
@@ -24,9 +25,13 @@ class Ball:
         if self.rect.colliderect(roof):
             self.velo[1] = -self.velo[1]
 
-        if self.rect.colliderect(player) and self.velo[1] > 0:
-            self.velo[1] = -self.velo[1]
-            hit_player = True
+        if self.rect.colliderect(player) and self.velo[1] > 0 and self.hit_side is not True:
+            if self.check_side_hit(player):
+                self.velo[0] = -self.velo[0]
+                self.hit_side = True
+            else:
+                self.velo[1] = -self.velo[1]
+                hit_player = True
 
         if self.rect.collidelist(wall_list) != -1:
             self.velo[0] = -self.velo[0]
@@ -38,16 +43,17 @@ class Ball:
         self.rect.y += self.velo[1]
 
         return hit_player
-
-    def __del__(self):
-        fade_away(self.color, self.rect, 0)
-
-def fade_away(color: "tuple[int,int,int]", rect: pygame.rect, times_called: int):
-    if times_called <= 10:
-        surf = pygame.Surface((25,25))
-        surf.fill((color[0], color[1], color[2], 10*255 - times_called))
-        display.blit(surf, rect)
-        fade_away(color, rect, times_called+1)
+    
+    def check_side_hit(self, player) -> bool:
+        if self.rect.collidepoint(player.x, player.y):
+            return True
+        if self.rect.collidepoint(player.x, player.x + 10):
+            return True
+        if self.rect.collidepoint(player.x + 10, player.y):
+            return True
+        if self.rect.collidepoint(player.x + 10, player.y + 10):
+            return True
+        return False
 
 pygame.init()
 
@@ -57,7 +63,7 @@ pygame.display.set_caption("multipong")
 FPS = 24
 game_clock = pygame.time.Clock()
 
-player_surf = pygame.Surface((100, 25))
+player_surf = pygame.Surface((100, 10))
 player_surf.fill((255, 0, 0))
 player_rect = player_surf.get_rect(center = (200, 650))
 
