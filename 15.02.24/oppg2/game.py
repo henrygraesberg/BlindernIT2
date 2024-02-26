@@ -22,6 +22,7 @@ class Ball:
              player: pygame.rect
              ) -> None:
         hit_player = False
+        
         if self.rect.colliderect(roof):
             self.velo[1] = -self.velo[1]
 
@@ -47,7 +48,7 @@ class Ball:
     def check_side_hit(self, player) -> bool:
         if self.rect.collidepoint(player.x, player.y):
             return True
-        if self.rect.collidepoint(player.x, player.x + 20):
+        if self.rect.collidepoint(player.x, player.y + 20):
             return True
         if self.rect.collidepoint(player.x + 20, player.y):
             return True
