@@ -9,23 +9,21 @@ class Food:
         self.rect = self.surface.get_rect(center=pos)
 
     def check_eaten(self, player_rect) -> bool:
-        if self.rect.colliderect(player_rect):
-            return True
-        return False
+        return self.rect.colliderect(player_rect)
 
 class Player:
     def __init__(self, pos: "tuple[int, int]"):
         self.surface = pygame.Surface((25, 25))
         self.surface.fill((0, 255, 0))
         self.rect = self.surface.get_rect(center = pos)
-        self.velo = [5, 0]
+        self.velo = [25, 0]
 
-    def move(self, direction):
+    def move(self, direction: str):
         directions = {
-            "up": [0, -10],
-            "down": [0, 10],
-            "left": [-10, 0],
-            "right": [10, 0]
+            "up": [0, -25],
+            "down": [0, 25],
+            "left": [-25, 0],
+            "right": [25, 0]
         }
 
         self.velo = directions[direction]
@@ -44,7 +42,7 @@ pygame.init()
 display = pygame.display.set_mode((500, 500))
 pygame.display.set_caption("nesten snake")
 
-FPS = 24
+FPS = 5
 game_clock = pygame.time.Clock()
 
 score = 0
