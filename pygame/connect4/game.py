@@ -2,7 +2,7 @@ import numpy, color_print
 
 class Board:
     def __init__(self, rows: int, columns: int) -> None:
-        self.board = list(map(lambda l: list(l), list(numpy.zeros(rows*columns, dtype=int).reshape(rows, columns))))
+        self.board = list(map(lambda iterable: list(iterable), list(numpy.zeros(rows*columns, dtype=int).reshape(rows, columns))))
         self.row_length = columns
         self.column_height = rows
 
@@ -54,7 +54,7 @@ class Board:
 
         #!IMPORTANT - Final todo before complete product
         #TODO: Create checks for diagonals
-        #numpy.diag maybe?
+        #numpy.diagonal maybe?
 
         return [False, 0]
 
@@ -84,7 +84,4 @@ while not won:
         elif won and player_won == 0:
             color_print.print_yellow("The players have tied")
 
-        if player == 1:
-            player = 2
-        else:
-            player = 1
+        player = 1 if player == 2 else 2
