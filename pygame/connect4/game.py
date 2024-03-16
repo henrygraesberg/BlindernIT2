@@ -2,12 +2,11 @@ import numpy, color_print
 
 class Board:
     def __init__(self, rows: int, columns: int) -> None:
-        self.board = []
+        self.board = list(map(lambda l: list(l), list(numpy.zeros(rows*columns, dtype=int).reshape(rows, columns))))
         self.row_length = columns
         self.column_height = rows
 
-        for i in range(rows):
-            self.board.append(list(numpy.zeros(columns, dtype=int)))
+        for i in range(len(self.board)):
             print(self.board[i])
 
     def place(self, pos: int, player: int) -> None:
@@ -23,6 +22,9 @@ class Board:
         raise Exception("Collumn is full")
     
     def check_winner(self) -> "list[bool,int]":
+        if 0 not in self.board[0]:
+            return [True, 0]
+
         for row in self.board:
             nums_in_a_row = 0
             player_checked_row = 0
@@ -52,6 +54,7 @@ class Board:
 
         #!IMPORTANT - Final todo before complete product
         #TODO: Create checks for diagonals
+        #numpy.diag maybe?
 
         return [False, 0]
 
@@ -61,6 +64,7 @@ player = 1
 
 while not won:
     print(f"\nIt is player {player}'s turn")
+
     pos = int(input("Place your token in collumn: ")) - 1
 
     try:
@@ -70,13 +74,15 @@ while not won:
     except:
         color_print.print_red("Collumn is full, try again")
     finally:
+        won, player_won = playing_board.check_winner()
+
         for i in range(len(playing_board.board)):
             print(playing_board.board[i])
 
-        won, player_won = playing_board.check_winner()
-
-        if won:
+        if won and player_won != 0:
             color_print.print_green(f'player {player_won} has won the game')
+        elif won and player_won == 0:
+            color_print.print_yellow("The players have tied")
 
         if player == 1:
             player = 2
