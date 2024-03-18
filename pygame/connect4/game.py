@@ -2,7 +2,7 @@ import numpy, color_print
 
 class Board:
     def __init__(self, rows: int, columns: int) -> None:
-        self.board = list(map(lambda iterable: list(iterable), list(numpy.zeros(rows*columns, dtype=int).reshape(rows, columns))))
+        self.board = list(map(lambda iterable: list(iterable), numpy.zeros(rows*columns, dtype=int).reshape(rows, columns)))
         self.row_length = columns
         self.column_height = rows
 
@@ -17,7 +17,7 @@ class Board:
             if self.board[i][pos] == 0:
                 self.board[i][pos] = player
                 
-                return
+                return None
         
         raise Exception("Collumn is full")
     
@@ -29,12 +29,12 @@ class Board:
             nums_in_a_row = 0
             player_checked_row = 0
 
-            for i in range(len(row) - 1, 0, -1):
+            for i in range(self.row_length - 1, 0, -1):
                 if row[i] != 0 and row[i] == row[i - 1]:
-                    nums_in_a_row += 1
+                    nums_in_a_row += 1 if nums_in_a_row > 0 else 2
                     player_checked_row = row[i]
 
-                    if nums_in_a_row >= 3:
+                    if nums_in_a_row >= 4:
                         return [True, player_checked_row]
                 else:
                     nums_in_a_row = 0
@@ -44,10 +44,10 @@ class Board:
         for i in range(self.row_length):
             for n in range(self.column_height - 1, 0, -1):
                 if self.board[n][i] != 0 and self.board[n][i] == self.board[n - 1][i]:
-                    nums_in_column += 1
+                    nums_in_column += 1 if nums_in_column > 0 else 2
                     player_checked_column = self.board[n][i]
                 
-                    if nums_in_column >= 3:
+                    if nums_in_column >= 4:
                         return [True, player_checked_column]
                 else:
                     nums_in_column = 0
@@ -63,7 +63,7 @@ won = False
 player = 1
 
 while not won:
-    print(f"\nIt is player {player}'s turn")
+    print("\n", f"It is player {player}'s turn", sep="")
 
     pos = int(input("Place your token in collumn: ")) - 1
 
