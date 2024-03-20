@@ -90,8 +90,8 @@ while True:
 
     to_delete = []
 
-    for i in range(len(balls)):
-        hit_player = balls[i].move(walls_rect,
+    for i, ball in enumerate(balls):
+        hit_player = ball.move(walls_rect,
                                    roof_rect,
                                    floor_rect,
                                    player_rect)
@@ -102,7 +102,7 @@ while True:
                                randint(3, 13)]))
         if hit_player == "delete":
             to_delete.append(i)
-        display.blit(balls[i].surface, balls[i].rect)
+        display.blit(ball.surface, ball.rect)
 
     to_delete.sort(reverse=True)
     for i in to_delete:
