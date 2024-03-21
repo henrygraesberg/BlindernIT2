@@ -6,8 +6,10 @@ class Board:
         self.row_length = columns
         self.column_height = rows
 
-        for i in range(len(self.board)):
-            print(self.board[i])
+        for row in self.board:
+            for n in row:
+                print(n, end="  ")
+            print("")
 
     def place(self, pos: int, player: int) -> None:
         if pos > len(self.board) or pos < 0:
@@ -106,8 +108,15 @@ while not won:
     finally:
         won, player_won = playing_board.check_winner()
 
-        for i in range(len(playing_board.board)):
-            print(playing_board.board[i])
+        for row in playing_board.board:
+            for n in row:
+                if n == 1:
+                    color_print.print_blue(n, end="  ")
+                elif n == 2:
+                    color_print.print_yellow(n, end="  ")
+                else:
+                    print(n, end="  ")
+            print("")
 
         if won and player_won != 0:
             color_print.print_green(f'player {player_won} has won the game')
