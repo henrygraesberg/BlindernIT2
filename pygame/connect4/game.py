@@ -52,9 +52,39 @@ class Board:
                 else:
                     nums_in_column = 0
 
-        #!IMPORTANT - Final todo before complete product
-        #TODO: Create checks for diagonals
-        #numpy.diagonal maybe?
+        #TODO: Find way to make it modular, currently only works for 6x7 grid
+        #Ugly ass code, but it kinda works (except for the fact that you can win with 3 in a row on the third lowest diagonals)
+        for i in range(-5, 6):
+            nums_in_diag = 0
+            player_checked_diag = 0
+
+            diagonal = numpy.diagonal(self.board, i)
+
+            for n in range(len(diagonal)):
+                if diagonal[n] != 0 and diagonal[n] == diagonal[n - 1]:
+                    nums_in_diag += 1 if nums_in_diag > 0 else 2
+                    player_checked_diag = diagonal[n]
+
+                    if nums_in_diag >= 4:
+                        return [True, player_checked_diag]
+                else:
+                    nums_in_diag = 0
+
+        for i in range(-5, 6):
+            nums_in_diag = 0
+            player_checked_diag = 0
+
+            diagonal = numpy.diagonal(numpy.fliplr(self.board), i)
+
+            for n in range(len(diagonal)):
+                if diagonal[n] != 0 and diagonal[n] == diagonal[n - 1]:
+                    nums_in_diag += 1 if nums_in_diag > 0 else 2
+                    player_checked_diag = diagonal[n]
+
+                    if nums_in_diag >= 4:
+                        return [True, player_checked_diag]
+                else:
+                    nums_in_diag = 0
 
         return [False, 0]
 
