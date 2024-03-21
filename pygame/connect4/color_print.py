@@ -1,8 +1,8 @@
 def print_red(string):
-    print("\033[91m{}\033[00m".format(string))
+    print(f'\033[91m{string}\033[00m')
 
 def print_green(string):
-    print("\033[92m{}\033[00m".format(string))
+    print(f'\033[92m{string}\033[00m')
 
 def print_yellow(string):
-    print("\033[93m{}\033[00m".format(string))
+    print(f'\033[93m{string}\033[00m')
