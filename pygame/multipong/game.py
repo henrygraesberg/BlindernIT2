@@ -39,16 +39,6 @@ class Ball:
 
         return hit_player
 
-    def __del__(self):
-        fade_away(self.color, self.rect, 0)
-
-def fade_away(color: "tuple[int,int,int]", rect: pygame.rect, times_called: int):
-    if times_called <= 10:
-        surf = pygame.Surface((25,25))
-        surf.fill((color[0], color[1], color[2], 10*255 - times_called))
-        display.blit(surf, rect)
-        fade_away(color, rect, times_called+1)
-
 pygame.init()
 
 display = pygame.display.set_mode((400, 700))
@@ -74,7 +64,7 @@ floor_rect = floor.get_rect(midbottom = (0, 700))
 roof = pygame.Surface((800, 10))
 roof_rect = roof.get_rect()
 
-balls = [Ball((255, 0, 255),
+balls = [Ball((randint(0, 255), randint(0, 255), randint(0, 255)),
               (randint(50, 350), 30),
               [randint(5, 15),
                randint(3, 13)])]
@@ -100,19 +90,19 @@ while True:
 
     to_delete = []
 
-    for i in range(len(balls)):
-        hit_player = balls[i].move(walls_rect,
+    for i, ball in enumerate(balls):
+        hit_player = ball.move(walls_rect,
                                    roof_rect,
                                    floor_rect,
                                    player_rect)
         if hit_player == True:
-            balls.append(Ball((255, 0, 255),
+            balls.append(Ball((randint(0, 255), randint(0, 255), randint(0, 255)),
                               (randint(50, 350), 30),
                               [randint(5, 15),
                                randint(3, 13)]))
         if hit_player == "delete":
             to_delete.append(i)
-        display.blit(balls[i].surface, balls[i].rect)
+        display.blit(ball.surface, ball.rect)
 
     to_delete.sort(reverse=True)
     for i in to_delete:
