@@ -23,7 +23,7 @@ class Board:
         
         raise Exception("Collumn is full")
     
-    def check_winner(self) -> "list[bool,int]":
+    def check_winner(self) -> "list[bool, int]":
         if 0 not in self.board[0]:
             return [True, 0]
 
@@ -55,14 +55,15 @@ class Board:
                     nums_in_column = 0
 
         #TODO: Find way to make it modular, currently only works for 6x7 grid
-        #Ugly ass code, but it kinda works (except for the fact that you can win with 3 in a row on the third lowest diagonals)
+        #TODO: Find a formula for the amount of diagonals in a 2D grid
+        """Ugly ass code, but it works!"""
         for i in range(-5, 6):
             nums_in_diag = 0
             player_checked_diag = 0
 
             diagonal = numpy.diagonal(self.board, i)
 
-            for n in range(len(diagonal)):
+            for n in range(len(diagonal) - 1, 0, -1):
                 if diagonal[n] != 0 and diagonal[n] == diagonal[n - 1]:
                     nums_in_diag += 1 if nums_in_diag > 0 else 2
                     player_checked_diag = diagonal[n]
@@ -78,7 +79,7 @@ class Board:
 
             diagonal = numpy.diagonal(numpy.fliplr(self.board), i)
 
-            for n in range(len(diagonal)):
+            for n in range(len(diagonal) - 1, 0, -1):
                 if diagonal[n] != 0 and diagonal[n] == diagonal[n - 1]:
                     nums_in_diag += 1 if nums_in_diag > 0 else 2
                     player_checked_diag = diagonal[n]
