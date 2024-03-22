@@ -41,7 +41,7 @@ class Spilleliste:
         for i in self._sanger:
             i.spill()
     
-    def finnSang(self, title) -> Sang or None:
+    def finnSang(self, title) -> Sang | None:
         for i in range(len(self._sanger)):
             if self._sanger[i].sjekkTittel(title):
                 return self._sanger[i]
