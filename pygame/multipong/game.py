@@ -9,7 +9,6 @@ class Ball:
                  start_velo: "list[int,int]"
                  ) -> None:
         self.surface = pygame.Surface((25, 25))
-        self.color = color
         self.surface.fill(color)
         self.rect = self.surface.get_rect(center = start_pos)
         self.velo = start_velo
@@ -44,7 +43,7 @@ pygame.init()
 display = pygame.display.set_mode((400, 700))
 pygame.display.set_caption("multipong")
 
-FPS = 24
+FPS = 30
 game_clock = pygame.time.Clock()
 
 player_surf = pygame.Surface((100, 25))
